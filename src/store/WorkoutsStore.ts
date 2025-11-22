@@ -1,4 +1,6 @@
-import type { TWorkout } from "./types";
+import type { TWorkout } from "@/pages/Workouts/types";
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
 export const workoutsData: TWorkout[] = [
   {
@@ -272,3 +274,27 @@ export const workoutsData: TWorkout[] = [
     ],
   },
 ];
+
+export type TWorkoutStore = {
+  data: TWorkout[] | null;
+  actions: {
+    getAll: () => void;
+    getWorkoutById: (workoutId: number) => TWorkout | undefined;
+  };
+};
+
+export const useWorkoutStore = create(
+  immer<TWorkoutStore>((set) => ({
+    data: null,
+    actions: {
+      getAll: () => {
+        set((store) => {
+          store.data = workoutsData;
+        });
+      },
+      getWorkoutById: (workoutId) => {
+        return workoutsData.find(({ id }) => id === workoutId);
+      },
+    },
+  }))
+);

@@ -1,13 +1,13 @@
-export type ExerciseSet = {
+export type TExerciseSet = {
   type: "warmup" | "working" | "dropset";
   reps: number | null;
 };
 
-export type Exercise = {
+export type TExercise = {
   id: number;
   name: string;
   youtube: string;
-  sets: ExerciseSet[];
+  sets: TExerciseSet[];
 };
 
-export type Workout = { id: number; name: string; exercises: Exercise[] };
+export type TWorkout = { id: number; name: string; exercises: TExercise[] };

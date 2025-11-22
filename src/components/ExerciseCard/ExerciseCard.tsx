@@ -1,4 +1,4 @@
-import type { Exercise } from "@/pages/Workouts/types";
+import type { TExercise } from "@/pages/Workouts/types";
 import {
   Item,
   ItemContent,
@@ -9,7 +9,7 @@ import {
 import { StretchHorizontal } from "lucide-react";
 import { formatExerciseSets } from "./helpers";
 
-export const ExerciseCard = ({ exercise }: { exercise: Exercise }) => {
+export const ExerciseCard = ({ exercise }: { exercise: TExercise }) => {
   const description = formatExerciseSets(exercise.sets);
   return (
     <Item variant="outline" size="sm">

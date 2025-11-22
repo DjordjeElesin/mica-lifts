@@ -11,6 +11,7 @@ export const ErrorBoundary = () => {
         flexDirection: "column",
       }}
     >
+      
     </div>
   );
 };

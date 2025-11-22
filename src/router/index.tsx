@@ -2,8 +2,8 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import { ErrorBoundary } from "@/pages/ErrorBoundary";
 import { Workouts } from "@/pages/Workouts";
-import { Profile } from "@/pages/Profile";
 import { WorkoutDetails } from "@/pages/WorkoutDetails";
+import { Profile } from "@/pages/Profile";
 
 const createRoutes = [
   {

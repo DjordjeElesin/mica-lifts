@@ -1,11 +1,19 @@
+import { useWorkoutStore } from "@/store/WorkoutsStore";
 import { WorkoutCard } from "./WorkoutCard/WorkoutCard";
-import { workoutsData } from "./workoutsData";
+import { useEffect } from "react";
 
 export const Workouts = () => {
+  const getWorkouts = useWorkoutStore((store) => store.actions.getAll);
+  const data = useWorkoutStore((store) => store.data);
+
+  useEffect(() => {
+    getWorkouts();
+  }, [getWorkouts]);
+
   return (
-    <div className="flex flex-col min-h-dvh gap-4">
+    <div className="flex flex-col gap-4">
       <h3>Workouts</h3>
-      {workoutsData.map(({ id, name, exercises }) => (
+      {data?.map(({ id, name, exercises }) => (
         <WorkoutCard
           key={id}
           id={id}
