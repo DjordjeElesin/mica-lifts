@@ -7,11 +7,11 @@ export type TActiveWorkoutStore = {
   workout: TWorkout | null;
   startedAt: string;
   exercisesProgress: {
-    [exerciseId: number]: boolean[];
+    [exerciseId: string]: boolean[];
   };
   actions: {
     startWorkout: (workout: TWorkout) => void;
-    toggleSet: (exerciseId: number, setIndex: number) => void;
+    toggleSet: (exerciseId: string, setIndex: number) => void;
     resetWorkout: () => void;
   };
 };
@@ -46,7 +46,7 @@ export const useActiveWorkoutStore = create(
         set((state) => {
           state.workout = null;
           state.startedAt = "";
-          state.exercisesProgress = [];
+          state.exercisesProgress = {};
         });
       },
     },

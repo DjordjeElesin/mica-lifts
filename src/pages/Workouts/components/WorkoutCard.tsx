@@ -10,7 +10,7 @@ import { ChevronRightIcon, Dumbbell } from "lucide-react";
 import { Link } from "react-router-dom";
 
 type WorkoutCardProps = {
-  id: number;
+  id: string;
   name: string;
   exercisesNumber: number;
 };

@@ -4,10 +4,10 @@ export type TExerciseSet = {
 };
 
 export type TExercise = {
-  id: number;
+  id: string;
   name: string;
-  youtube: string;
+  url: string;
   sets: TExerciseSet[];
 };
 
-export type TWorkout = { id: number; name: string; exercises: TExercise[] };
+export type TWorkout = { id: string; name: string; exercises: TExercise[] };

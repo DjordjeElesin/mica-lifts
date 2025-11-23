@@ -1,16 +1,18 @@
+import { getWorkouts } from "@/api";
 import type { TWorkout } from "@/pages/Workouts/types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { useLoadingStore } from "./LoadingStore";
 
 export const workoutsData: TWorkout[] = [
   {
-    id: 1,
+    id: "asadfasdf",
     name: "Glutes & Hamstrings",
     exercises: [
       {
-        id: 1,
+        id: "asadfasdf",
         name: "Hip Thrust",
-        youtube: "https://www.youtube.com/watch?v=LM8XHLYJoYs",
+        url: "https://www.url.com/watch?v=LM8XHLYJoYs",
         sets: [
           { type: "warmup", reps: null },
           { type: "working", reps: 8 },
@@ -18,45 +20,45 @@ export const workoutsData: TWorkout[] = [
         ],
       },
       {
-        id: 2,
+        id: "asadfasdf",
         name: "Romanian Deadlift",
-        youtube: "https://www.youtube.com/watch?v=3qw-yU8R0KQ",
+        url: "https://www.url.com/watch?v=3qw-yU8R0KQ",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
         ],
       },
       {
-        id: 3,
+        id: "asadfasdf",
         name: "Step Ups",
-        youtube: "https://www.youtube.com/watch?v=JB2oyawG9KI",
+        url: "https://www.url.com/watch?v=JB2oyawG9KI",
         sets: [
           { type: "working", reps: 12 },
           { type: "working", reps: 12 },
         ],
       },
       {
-        id: 4,
+        id: "asadfasdf",
         name: "Leg Curls",
-        youtube: "https://www.youtube.com/watch?v=1Tq3QdYUuHs",
+        url: "https://www.url.com/watch?v=1Tq3QdYUuHs",
         sets: [
           { type: "working", reps: 12 },
           { type: "dropset", reps: 12 },
         ],
       },
       {
-        id: 5,
+        id: "asadfasdf",
         name: "Hip Abduction",
-        youtube: "https://www.youtube.com/watch?v=glF_jGDA_xA",
+        url: "https://www.url.com/watch?v=glF_jGDA_xA",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
         ],
       },
       {
-        id: 6,
+        id: "asadfasdf",
         name: "Kickbacks",
-        youtube: "https://www.youtube.com/watch?v=Thw5uakV4VM",
+        url: "https://www.url.com/watch?v=Thw5uakV4VM",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
@@ -66,13 +68,13 @@ export const workoutsData: TWorkout[] = [
     ],
   },
   {
-    id: 2,
+    id: "asadfasdf",
     name: "Back & Arms",
     exercises: [
       {
-        id: 1,
+        id: "asadfasdf",
         name: "Lat Pulldown",
-        youtube: "https://www.youtube.com/watch?v=CAwf7n6Luuc",
+        url: "https://www.url.com/watch?v=CAwf7n6Luuc",
         sets: [
           { type: "warmup", reps: null },
           { type: "working", reps: 10 },
@@ -80,45 +82,45 @@ export const workoutsData: TWorkout[] = [
         ],
       },
       {
-        id: 2,
+        id: "asadfasdf",
         name: "Seated Row",
-        youtube: "https://www.youtube.com/watch?v=GZbfZ033f74",
+        url: "https://www.url.com/watch?v=GZbfZ033f74",
         sets: [
           { type: "working", reps: 8 },
           { type: "dropset", reps: 8 },
         ],
       },
       {
-        id: 3,
+        id: "asadfasdf",
         name: "Face Pulls",
-        youtube: "https://www.youtube.com/watch?v=rep-qVOkqgk",
+        url: "https://www.url.com/watch?v=rep-qVOkqgk",
         sets: [
           { type: "working", reps: 12 },
           { type: "working", reps: 12 },
         ],
       },
       {
-        id: 4,
+        id: "asadfasdf",
         name: "Cable Bicep Curl",
-        youtube: "https://www.youtube.com/watch?v=av7-8igSXTs",
+        url: "https://www.url.com/watch?v=av7-8igSXTs",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
         ],
       },
       {
-        id: 5,
+        id: "asadfasdf",
         name: "Triceps Extension",
-        youtube: "https://www.youtube.com/watch?v=vB5OHsJ3EME",
+        url: "https://www.url.com/watch?v=vB5OHsJ3EME",
         sets: [
           { type: "working", reps: 10 },
           { type: "dropset", reps: 10 },
         ],
       },
       {
-        id: 6,
+        id: "asadfasdf",
         name: "Incline Bicep Curl",
-        youtube: "https://www.youtube.com/watch?v=soxrZlIl35U",
+        url: "https://www.url.com/watch?v=soxrZlIl35U",
         sets: [
           { type: "working", reps: 10 },
           { type: "dropset", reps: 10 },
@@ -127,13 +129,13 @@ export const workoutsData: TWorkout[] = [
     ],
   },
   {
-    id: 3,
+    id: "asadfasdf",
     name: "Legs & Shoulders",
     exercises: [
       {
-        id: 1,
+        id: "asadfasdf",
         name: "Squats",
-        youtube: "https://www.youtube.com/watch?v=YaXPRqUwItQ",
+        url: "https://www.url.com/watch?v=YaXPRqUwItQ",
         sets: [
           { type: "warmup", reps: null },
           { type: "warmup", reps: null },
@@ -142,45 +144,45 @@ export const workoutsData: TWorkout[] = [
         ],
       },
       {
-        id: 2,
+        id: "asadfasdf",
         name: "Hip Thrust",
-        youtube: "https://www.youtube.com/watch?v=LM8XHLYJoYs",
+        url: "https://www.url.com/watch?v=LM8XHLYJoYs",
         sets: [
           { type: "working", reps: 8 },
           { type: "dropset", reps: 8 },
         ],
       },
       {
-        id: 3,
+        id: "asadfasdf",
         name: "Reverse Deficit Lunges",
-        youtube: "https://www.youtube.com/watch?v=zD8-6x7Yw4U",
+        url: "https://www.url.com/watch?v=zD8-6x7Yw4U",
         sets: [
           { type: "working", reps: 8 },
           { type: "working", reps: 8 },
         ],
       },
       {
-        id: 4,
+        id: "asadfasdf",
         name: "Leg Extensions",
-        youtube: "https://www.youtube.com/watch?v=yR1NmFZ_jZ0",
+        url: "https://www.url.com/watch?v=yR1NmFZ_jZ0",
         sets: [
           { type: "working", reps: 10 },
           { type: "dropset", reps: 10 },
         ],
       },
       {
-        id: 5,
+        id: "asadfasdf",
         name: "Shoulder Press",
-        youtube: "https://www.youtube.com/watch?v=qEwKCR5JCog",
+        url: "https://www.url.com/watch?v=qEwKCR5JCog",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
         ],
       },
       {
-        id: 6,
+        id: "asadfasdf",
         name: "Lateral Raises",
-        youtube: "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+        url: "https://www.url.com/watch?v=3VcKaXpzqRo",
         sets: [
           { type: "working", reps: 12 },
           { type: "working", reps: 12 },
@@ -189,13 +191,13 @@ export const workoutsData: TWorkout[] = [
     ],
   },
   {
-    id: 4,
+    id: "asadfasdf",
     name: "Glutes & Quads",
     exercises: [
       {
-        id: 1,
+        id: "asadfasdf",
         name: "Bulgarian Split Squat",
-        youtube: "https://www.youtube.com/watch?v=2C-uNgKwPLE",
+        url: "https://www.url.com/watch?v=2C-uNgKwPLE",
         sets: [
           { type: "warmup", reps: null },
           { type: "working", reps: 8 },
@@ -203,36 +205,36 @@ export const workoutsData: TWorkout[] = [
         ],
       },
       {
-        id: 2,
+        id: "asadfasdf",
         name: "Hip Thrust",
-        youtube: "https://www.youtube.com/watch?v=LM8XHLYJoYs",
+        url: "https://www.url.com/watch?v=LM8XHLYJoYs",
         sets: [
           { type: "working", reps: 10 },
           { type: "dropset", reps: 10 },
         ],
       },
       {
-        id: 3,
+        id: "asadfasdf",
         name: "Leg Press",
-        youtube: "https://www.youtube.com/watch?v=IZxyjW7MPJQ",
+        url: "https://www.url.com/watch?v=IZxyjW7MPJQ",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
         ],
       },
       {
-        id: 4,
+        id: "asadfasdf",
         name: "Quad Extension",
-        youtube: "https://www.youtube.com/watch?v=YyvSfVjQeL0",
+        url: "https://www.url.com/watch?v=YyvSfVjQeL0",
         sets: [
           { type: "working", reps: 12 },
           { type: "dropset", reps: 12 },
         ],
       },
       {
-        id: 5,
+        id: "asadfasdf",
         name: "Glute Focused Step Ups",
-        youtube: "https://www.youtube.com/watch?v=JB2oyawG9KI",
+        url: "https://www.url.com/watch?v=JB2oyawG9KI",
         sets: [
           { type: "working", reps: 10 },
           { type: "working", reps: 10 },
@@ -241,31 +243,31 @@ export const workoutsData: TWorkout[] = [
     ],
   },
   {
-    id: 5,
+    id: "asadfasdf",
     name: "Cardio & Abs",
     exercises: [
       {
-        id: 1,
+        id: "asadfasdf",
         name: "Treadmill Walk (Incline)",
-        youtube: "https://www.youtube.com/watch?v=wR0GOTUqY94",
+        url: "https://www.url.com/watch?v=wR0GOTUqY94",
         sets: [
           { type: "working", reps: 15 },
           { type: "working", reps: 5 },
         ],
       },
       {
-        id: 2,
+        id: "asadfasdf",
         name: "Hanging Knee Raises",
-        youtube: "https://www.youtube.com/watch?v=l4yYz0UqJ5M",
+        url: "https://www.url.com/watch?v=l4yYz0UqJ5M",
         sets: [
           { type: "working", reps: 12 },
           { type: "working", reps: 12 },
         ],
       },
       {
-        id: 4,
+        id: "asadfasdf",
         name: "Weighted Crunch Machine",
-        youtube: "https://www.youtube.com/watch?v=5ER5Of4MOPI",
+        url: "https://www.url.com/watch?v=5ER5Of4MOPI",
         sets: [
           { type: "working", reps: 12 },
           { type: "dropset", reps: 12 },
@@ -278,8 +280,7 @@ export const workoutsData: TWorkout[] = [
 export type TWorkoutStore = {
   data: TWorkout[] | null;
   actions: {
-    getAll: () => void;
-    getWorkoutById: (workoutId: number) => TWorkout | undefined;
+    getAll: () => Promise<TWorkout[]>;
   };
 };
 
@@ -287,13 +288,20 @@ export const useWorkoutStore = create(
   immer<TWorkoutStore>((set) => ({
     data: null,
     actions: {
-      getAll: () => {
-        set((store) => {
-          store.data = workoutsData;
-        });
-      },
-      getWorkoutById: (workoutId) => {
-        return workoutsData.find(({ id }) => id === workoutId);
+      getAll: async () => {
+        try {
+          useLoadingStore.getState().actions.setLoadingState("workouts", true);
+          const data = await getWorkouts();
+          set((store) => {
+            store.data = data;
+          });
+          useLoadingStore.getState().actions.setLoadingState("workouts", false);
+          return data;
+        } catch (error) {
+          useLoadingStore.getState().actions.setLoadingState("workouts", false);
+          console.error(error);
+          return [];
+        }
       },
     },
   }))

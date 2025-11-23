@@ -1,10 +1,23 @@
-import { StretchHorizontal } from "lucide-react";
-import { Item, ItemContent, ItemMedia, ItemTitle } from "../ui/item";
+import { StretchHorizontal, Trash } from "lucide-react";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemMedia,
+  ItemTitle,
+} from "../ui/item";
 import type { TExercise } from "@/pages/Workouts/types";
 import { ExerciseSet } from "./ExerciseSet";
 import { useActiveWorkoutStore } from "@/store/ActiveWorkoutStore";
+import { Button } from "../ui";
 
-export const ExerciseCardActive = ({ exercise }: { exercise: TExercise }) => {
+export const ExerciseCardActive = ({
+  exercise,
+  onRemove,
+}: {
+  exercise: TExercise;
+  onRemove: () => void;
+}) => {
   const toggleSet = useActiveWorkoutStore((state) => state.actions.toggleSet);
 
   return (
@@ -24,6 +37,11 @@ export const ExerciseCardActive = ({ exercise }: { exercise: TExercise }) => {
           ))}
         </div>
       </ItemContent>
+      <ItemActions>
+        <Button variant="ghost" onClick={onRemove}>
+          <Trash />
+        </Button>
+      </ItemActions>
     </Item>
   );
 };
