@@ -29,7 +29,8 @@ export const WorkoutDetails = () => {
   );
 
   useEffect(() => {
-    getWorkout(id!);
+    if (!id || typeof id !== "string") return;
+    getWorkout(id);
   }, [getWorkout, id]);
 
   if (!workout) return null;

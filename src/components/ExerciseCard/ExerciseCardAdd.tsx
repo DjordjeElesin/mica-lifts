@@ -1,22 +1,23 @@
 import type { TExercise } from "@/pages/Workouts/types";
+import { formatExerciseSets } from "./helpers";
 import {
+  Button,
+  Checkbox,
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "../ui/item";
-import { SquareArrowOutUpRight, StretchHorizontal, Trash } from "lucide-react";
-import { formatExerciseSets } from "./helpers";
-import { Button } from "../ui";
+} from "../ui";
+import { SquareArrowOutUpRight, StretchHorizontal } from "lucide-react";
 
-export const ExerciseCard = ({
+export const ExerciseCardAdd = ({
   exercise,
-  onRemove,
+  toggleAdd,
 }: {
   exercise: TExercise;
-  onRemove: () => void;
+  toggleAdd: () => void;
 }) => {
   const description = formatExerciseSets(exercise.sets);
   const openUrl = () => window.open(exercise.url, "_blank");
@@ -36,9 +37,7 @@ export const ExerciseCard = ({
             <SquareArrowOutUpRight onClick={openUrl} />
           </Button>
         )}
-        <Button variant="ghost" onClick={onRemove}>
-          <Trash />
-        </Button>
+        <Checkbox className="h-6 w-6" onClick={toggleAdd} />
       </ItemActions>
     </Item>
   );

@@ -4,7 +4,9 @@ import { immer } from "zustand/middleware/immer";
 
 const initalLoadingState: TLoadingItems = {
   workouts: false,
-  workoutDetails: false
+  workoutDetails: false,
+  exercises: false,
+  createWorkout: false,
 };
 
 type TLoadingStore = {

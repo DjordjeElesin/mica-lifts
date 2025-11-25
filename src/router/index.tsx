@@ -4,6 +4,7 @@ import { ErrorBoundary } from "@/pages/ErrorBoundary";
 import { Workouts } from "@/pages/Workouts";
 import { WorkoutDetails } from "@/pages/WorkoutDetails";
 import { Profile } from "@/pages/Profile";
+import { CreateWorkout } from "@/pages/CreateWorkout";
 
 const createRoutes = [
   {
@@ -19,6 +20,10 @@ const createRoutes = [
       {
         path: "/workouts/:id",
         element: <WorkoutDetails />,
+      },
+      {
+        path: "workouts/create",
+        element: <CreateWorkout />,
       },
       {
         path: "/profile",

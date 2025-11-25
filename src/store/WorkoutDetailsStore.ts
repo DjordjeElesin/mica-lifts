@@ -1,12 +1,18 @@
 import {
   addExerciseToWorkout,
+  createWorkout,
   getById,
   removeExerciseFromWorkout,
 } from "@/api";
-import type { TExercise, TWorkout } from "@/pages/Workouts/types";
+import type {
+  TExercise,
+  TWorkout,
+  TWorkoutPayload,
+} from "@/pages/Workouts/types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { useLoadingStore } from "./LoadingStore";
+import type { NavigateFunction } from "react-router-dom";
 
 export type TWorkoutDetailsStore = {
   data: TWorkout | null;
@@ -17,6 +23,10 @@ export type TWorkoutDetailsStore = {
       exercise: Omit<TExercise, "id">
     ) => Promise<void>;
     removeExercise: (workoutId: string, exerciseId: string) => Promise<void>;
+    createWorkout: (
+      payload: TWorkoutPayload,
+      navigate: NavigateFunction
+    ) => Promise<string>;
   };
 };
 
@@ -77,6 +87,25 @@ export const useWorkoutDetailsStore = create(
             .getState()
             .actions.setLoadingState("workoutDetails", false);
           console.error(error);
+        }
+      },
+      createWorkout: async (payload, navigate) => {
+        try {
+          useLoadingStore
+            .getState()
+            .actions.setLoadingState("createWorkout", true);
+          const data = await createWorkout(payload);
+          useLoadingStore
+            .getState()
+            .actions.setLoadingState("createWorkout", false);
+          navigate(`/workouts/${data}`);
+          return data;
+        } catch (error) {
+          useLoadingStore
+            .getState()
+            .actions.setLoadingState("createWorkout", false);
+          console.error(error);
+          return "";
         }
       },
     },
