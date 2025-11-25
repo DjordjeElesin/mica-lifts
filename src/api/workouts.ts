@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase";
-import type { TExercise, TWorkout } from "@/pages/Workouts/types";
+import type { TExercise, TWorkout, TWorkoutPayload } from "@/pages/Workouts/types";
 import {
   collection,
   getDocs,
@@ -98,4 +98,16 @@ export const removeExerciseFromWorkout = async (
   await updateDoc(doc(db, "workouts", workoutId), {
     exercises: arrayRemove(exerciseId),
   });
+};
+
+export const createWorkout = async (
+  payload: TWorkoutPayload
+): Promise<string> => {
+  const docRef = await addDoc(collection(db, "workouts"), {
+    name: payload.name,
+    notes: payload.notes,
+    exercises: payload.exercises ?? [],
+  });
+
+  return docRef.id;
 };

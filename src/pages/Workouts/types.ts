@@ -10,4 +10,13 @@ export type TExercise = {
   sets: TExerciseSet[];
 };
 
-export type TWorkout = { id: string; name: string; exercises: TExercise[] };
+export type TWorkout = {
+  id: string;
+  name: string;
+  notes?: string;
+  exercises: TExercise[];
+};
+
+export type TWorkoutPayload = Omit<TWorkout, "id" | "exercises"> & {
+  exercises: string[];
+};
