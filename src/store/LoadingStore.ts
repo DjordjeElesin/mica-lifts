@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 const initalLoadingState: TLoadingItems = {
+  default: false,
   workouts: false,
   workoutDetails: false,
   exercises: false,

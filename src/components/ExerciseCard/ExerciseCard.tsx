@@ -1,4 +1,3 @@
-import type { TExercise } from "@/pages/Workouts/types";
 import {
   Item,
   ItemActions,
@@ -8,27 +7,30 @@ import {
   ItemTitle,
 } from "../ui/item";
 import { SquareArrowOutUpRight, StretchHorizontal, Trash } from "lucide-react";
-import { formatExerciseSets } from "./helpers";
 import { Button } from "../ui";
+import type { TExercise } from "@/types";
 
 export const ExerciseCard = ({
   exercise,
   onRemove,
+  onClick,
 }: {
   exercise: TExercise;
-  onRemove: () => void;
+  onRemove?: () => void;
+  onClick?: () => void;
 }) => {
-  const description = formatExerciseSets(exercise.sets);
   const openUrl = () => window.open(exercise.url, "_blank");
 
   return (
-    <Item variant="outline" size="sm">
+    <Item variant="outline" size="sm" onClick={onClick}>
       <ItemMedia>
         <StretchHorizontal className="size-3" />
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{exercise.name}</ItemTitle>
-        <ItemDescription className="mt-1">{description}</ItemDescription>
+        <ItemDescription className="mt-1">
+          {exercise.muscleGroup.name}
+        </ItemDescription>
       </ItemContent>
       <ItemActions>
         {!!exercise.url && (
@@ -36,9 +38,11 @@ export const ExerciseCard = ({
             <SquareArrowOutUpRight onClick={openUrl} />
           </Button>
         )}
-        <Button variant="ghost" onClick={onRemove}>
-          <Trash />
-        </Button>
+        {onRemove && (
+          <Button variant="ghost" onClick={onRemove}>
+            <Trash />
+          </Button>
+        )}
       </ItemActions>
     </Item>
   );

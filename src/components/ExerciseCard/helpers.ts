@@ -1,10 +1,10 @@
-import type { TExerciseSet } from "@/pages/Workouts/types";
+import type { TSet } from "@/types";
 import groupBy from "lodash/groupBy";
 
 const plural = (word: string, count: number) =>
   count === 1 ? word : `${word}s`;
 
-export const formatExerciseSets = (sets: TExerciseSet[]) => {
+export const formatExerciseSets = (sets: TSet[]) => {
   const grouped = groupBy(sets, "type");
   const warmup = grouped["warmup"]?.length;
   const workingAndDropset =

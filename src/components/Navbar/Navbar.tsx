@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 const navItems = [
   { path: "/workouts", label: "Workouts", icon: Dumbbell },
+  { path: "/exercises", label: "Exercises", icon: Dumbbell },
   { path: "/profile", label: "Profile", icon: User },
 ];
 

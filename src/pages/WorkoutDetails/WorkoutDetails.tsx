@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CirclePlay } from "lucide-react";
 import { useBoolean } from "usehooks-ts";
@@ -8,15 +7,18 @@ import { ExerciseList } from "./ExerciseList";
 import { useActiveWorkoutStore } from "@/store/ActiveWorkoutStore";
 import { AddExercise } from "./AddExercise/AddExercise";
 import { useWorkoutDetailsStore } from "@/store/WorkoutDetailsStore";
-import { useEffect } from "react";
 import { Loading } from "@/components/Loading";
+import type { LoaderFunctionArgs } from "react-router-dom";
+
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  if (!params.id || typeof params.id !== "string") return null;
+  return Promise.all([
+    useWorkoutDetailsStore.getState().actions.getWorkoutById(params.id),
+  ]);
+};
 
 export const WorkoutDetails = () => {
-  const { id } = useParams();
   const { value: isActive, setTrue, setFalse } = useBoolean(false);
-  const getWorkout = useWorkoutDetailsStore(
-    (store) => store.actions.getWorkoutById
-  );
   const removeExercise = useWorkoutDetailsStore(
     (store) => store.actions.removeExercise
   );
@@ -27,11 +29,6 @@ export const WorkoutDetails = () => {
   const resetWorkout = useActiveWorkoutStore(
     (store) => store.actions.resetWorkout
   );
-
-  useEffect(() => {
-    if (!id || typeof id !== "string") return;
-    getWorkout(id);
-  }, [getWorkout, id]);
 
   if (!workout) return null;
   const { name, exercises } = workout;

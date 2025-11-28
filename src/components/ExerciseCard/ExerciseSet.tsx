@@ -1,4 +1,4 @@
-import type { TExerciseSet } from "@/pages/Workouts/types";
+import type { TSet } from "@/types";
 import { Checkbox } from "../ui";
 import startCase from "lodash/startCase";
 
@@ -6,7 +6,7 @@ export const ExerciseSet = ({
   set,
   onToggle,
 }: {
-  set: TExerciseSet;
+  set: TSet;
   onToggle: () => void;
 }) => {
   return (

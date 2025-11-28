@@ -1,23 +1,37 @@
-import { Button } from "@/components/ui";
-import { Bookmark } from "lucide-react";
-import { CreateWorkoutForm } from "./CreateWorkoutForm";
-import { ExercisesList } from "./ExercisesList";
+import { CreateWorkoutForm } from "./components/CreateWorkoutForm";
 import { CreateWorkoutProvider } from "./CreateWorkoutContext";
-import { useCreateWorkout } from "./useCreateWorkout";
 import { Loading } from "@/components/Loading";
+import { ButtonSection } from "./components/ButtonSection";
+import { useCreateWorkout } from "./useCreateWorkout";
+import { useExercisesStore } from "@/store/ExercisesStore";
+import { SelectExercises } from "./components/SelectExercises";
+import { AddExerciseSets } from "./components/AddExerciseSets";
+
+export const loader = async () =>
+  Promise.all([
+    useExercisesStore.getState().actions.getAll(),
+  ]);
+
 
 export const CreateWorkoutBase = () => {
-  const { onSubmit, isSubmitDisabled } = useCreateWorkout();
+  const {
+    step,
+    formValues: { name },
+  } = useCreateWorkout();
+  const [isStepOne, isStepTwo, isStepThree] = [
+    step === 1,
+    step === 2,
+    step === 3,
+  ];
+
   return (
-    <div className="flex flex-col gap-4">
-      <h3>Untitled</h3>
-      <Loading type="createWorkout" />
-      <CreateWorkoutForm />
-      <ExercisesList />
-      <Button className="mt-8" onClick={onSubmit} disabled={isSubmitDisabled}>
-        <Bookmark />
-        Submit
-      </Button>
+    <div className="flex flex-col gap-4 pb-20">
+      <h3>{name ? name : "Untitled"}</h3>
+      <Loading type="exercises" />
+      {isStepOne && <CreateWorkoutForm />}
+      {isStepTwo && <SelectExercises />}
+      {isStepThree && <AddExerciseSets/>}
+      <ButtonSection />
     </div>
   );
 };
