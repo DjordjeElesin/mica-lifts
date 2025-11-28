@@ -1,3 +1,5 @@
+import { useExercisesStore } from "@/store/ExercisesStore";
+import type { TExercise, TExerciseActive } from "@/types";
 import {
   createContext,
   useContext,
@@ -6,16 +8,21 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import type { TExercise } from "../Workouts/types";
 
 type TCreateWorkoutContext = {
+  exercises: TExercise[];
   formValues: { name: string; notes: string };
   setFormValues: Dispatch<SetStateAction<{ name: string; notes: string }>>;
-  selectedExercises: TExercise[];
-  setSelectedExercises: Dispatch<SetStateAction<TExercise[]>>;
+  selectedExercises: TExerciseActive[];
+  setSelectedExercises: Dispatch<SetStateAction<TExerciseActive[]>>;
+  step: number;
+  setStep: Dispatch<SetStateAction<number>>;
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  searchResults: TExercise[];
+  setSearchResults: Dispatch<SetStateAction<TExercise[]>>;
 };
 
-//eslint-disable-next-line
 export const CreateWorkoutContext = createContext<TCreateWorkoutContext | null>(
   null
 );
@@ -27,18 +34,33 @@ export const CreateWorkoutProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const exercises = useExercisesStore((state) => state.data);
+
+  const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState<{ name: string; notes: string }>(
     initialFormValues
   );
-  const [selectedExercises, setSelectedExercises] = useState<TExercise[]>([]);
+  const [selectedExercises, setSelectedExercises] = useState<TExerciseActive[]>(
+    []
+  );
+  const [searchResults, setSearchResults] = useState(exercises);
+  const [search, setSearch] = useState("");
+
   const value = useMemo(
     () => ({
       formValues,
       setFormValues,
       selectedExercises,
       setSelectedExercises,
+      step,
+      setStep,
+      exercises,
+      searchResults,
+      setSearchResults,
+      search,
+      setSearch,
     }),
-    [formValues, selectedExercises]
+    [formValues, selectedExercises, step, exercises, searchResults, search]
   );
   return (
     <CreateWorkoutContext.Provider value={value}>
@@ -47,7 +69,6 @@ export const CreateWorkoutProvider = ({
   );
 };
 
-//eslint-disable-next-line
 export const useCreateWorkoutContext = () => {
   const context = useContext(CreateWorkoutContext);
 

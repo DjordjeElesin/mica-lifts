@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import type { TWorkout } from "@/pages/Workouts/types";
 import { format } from "date-fns";
+import type { TWorkout } from "@/types";
 
 export type TActiveWorkoutStore = {
   workout: TWorkout | null;

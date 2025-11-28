@@ -1,5 +1,3 @@
-import type { TExercise } from "@/pages/Workouts/types";
-import { formatExerciseSets } from "./helpers";
 import {
   Button,
   Checkbox,
@@ -11,6 +9,7 @@ import {
   ItemTitle,
 } from "../ui";
 import { SquareArrowOutUpRight, StretchHorizontal } from "lucide-react";
+import type { TExercise } from "@/types";
 
 export const ExerciseCardAdd = ({
   exercise,
@@ -19,7 +18,6 @@ export const ExerciseCardAdd = ({
   exercise: TExercise;
   toggleAdd: () => void;
 }) => {
-  const description = formatExerciseSets(exercise.sets);
   const openUrl = () => window.open(exercise.url, "_blank");
 
   return (
@@ -29,7 +27,9 @@ export const ExerciseCardAdd = ({
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{exercise.name}</ItemTitle>
-        <ItemDescription className="mt-1">{description}</ItemDescription>
+        <ItemDescription className="mt-1">
+          {exercise.muscleGroup.name}
+        </ItemDescription>
       </ItemContent>
       <ItemActions>
         {!!exercise.url && (

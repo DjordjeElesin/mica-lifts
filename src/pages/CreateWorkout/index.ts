@@ -1,1 +1,1 @@
-export { CreateWorkout } from "./CreateWorkout";
+export { CreateWorkout, loader } from "./CreateWorkout";

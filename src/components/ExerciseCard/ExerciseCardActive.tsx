@@ -6,16 +6,16 @@ import {
   ItemMedia,
   ItemTitle,
 } from "../ui/item";
-import type { TExercise } from "@/pages/Workouts/types";
 import { ExerciseSet } from "./ExerciseSet";
 import { useActiveWorkoutStore } from "@/store/ActiveWorkoutStore";
 import { Button } from "../ui";
+import type { TExerciseActive } from "@/types";
 
 export const ExerciseCardActive = ({
   exercise,
   onRemove,
 }: {
-  exercise: TExercise;
+  exercise: TExerciseActive;
   onRemove: () => void;
 }) => {
   const toggleSet = useActiveWorkoutStore((state) => state.actions.toggleSet);

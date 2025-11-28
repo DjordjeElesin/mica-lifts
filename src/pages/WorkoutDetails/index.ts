@@ -1,1 +1,1 @@
-export { WorkoutDetails } from "./WorkoutDetails";
+export { WorkoutDetails, loader } from "./WorkoutDetails";

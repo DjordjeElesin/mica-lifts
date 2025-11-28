@@ -33,7 +33,7 @@ export const Selection = ({
     <>
       {!!selectLabel && <Label>{selectLabel}</Label>}
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className={className}>
+        <SelectTrigger className={`w-full ${className}`}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

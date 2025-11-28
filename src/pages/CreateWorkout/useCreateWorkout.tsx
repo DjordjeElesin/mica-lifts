@@ -1,22 +1,49 @@
 import { useMemo, type ChangeEvent } from "react";
 import { useCreateWorkoutContext } from "./CreateWorkoutContext";
-import type { TExercise } from "../Workouts/types";
 import { useWorkoutDetailsStore } from "@/store/WorkoutDetailsStore";
 import { useNavigate } from "react-router-dom";
+import type { TExercise, TSet } from "@/types";
+import { useSearchExercises } from "@/hooks";
+import { useStepManagement } from "./useStepManagement";
 
 export const useCreateWorkout = () => {
   const navigate = useNavigate();
-  const { formValues, setFormValues, selectedExercises, setSelectedExercises } =
-    useCreateWorkoutContext();
+  const {
+    exercises,
+    formValues,
+    setFormValues,
+    selectedExercises,
+    setSelectedExercises,
+    step,
+    setStep,
+    search,
+    setSearch,
+    searchResults,
+    setSearchResults,
+  } = useCreateWorkoutContext();
+
+  const { onChangeSearch } = useSearchExercises({
+    exercises,
+    search,
+    setSearch,
+    setSearchResults,
+  });
+
+  const { onNext, onBack, onCancel, isNextDisabled } = useStepManagement({
+    step,
+    setStep,
+    name: formValues.name,
+    selectedExercises,
+  });
 
   const createWorkout = useWorkoutDetailsStore(
     (state) => state.actions.createWorkout
   );
 
-  const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
+  const onFormChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
     setFormValues((s) => ({ ...s, [name]: value }));
   };
 
@@ -25,8 +52,16 @@ export const useCreateWorkout = () => {
       const exists = prev.some((ex) => ex.id === exercise.id);
       return exists
         ? prev.filter((ex) => ex.id !== exercise.id)
-        : [...prev, exercise];
+        : [...prev, { ...exercise, sets: [] }];
     });
+  };
+
+  const onAddSetToExercise = (set: TSet, exerciseId: string) => {
+    setSelectedExercises((prev) =>
+      prev.map((item) =>
+        item.id === exerciseId ? { ...item, sets: [...item.sets, set] } : item
+      )
+    );
   };
 
   const isSubmitDisabled = useMemo(
@@ -39,17 +74,30 @@ export const useCreateWorkout = () => {
     const payload = {
       name: formValues.name,
       notes: formValues.notes,
-      exercises: selectedExercises.map(({ id }) => id),
+      exercises: selectedExercises.map(({ id, sets }) => ({
+        exerciseId: id,
+        sets,
+      })),
     };
     createWorkout(payload, navigate);
   };
 
   return {
+    exercises,
     formValues,
     onFormChange,
     selectedExercises,
     toggleSelect,
     onSubmit,
     isSubmitDisabled,
+    step,
+    onNext,
+    onBack,
+    onCancel,
+    isNextDisabled,
+    search,
+    searchResults,
+    onChangeSearch,
+    onAddSetToExercise,
   };
 };

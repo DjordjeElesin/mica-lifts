@@ -1,5 +1,5 @@
 import { ExerciseCard, ExerciseCardActive } from "@/components/ExerciseCard";
-import type { TExercise } from "../Workouts/types";
+import type { TExercise } from "@/types";
 
 export const ExerciseList = ({
   exercises,
