@@ -12,7 +12,7 @@ export const useCreateExercise = () => {
     (state) => state.actions.createExercise,
   );
   const getExercises = useExercisesStore((state) => state.actions.getAll);
-  console.log("test");
+
   const onMuscleGroupChange = (muscleGroup: string) => {
     setFormValues((prev) => ({ ...prev, muscleGroup }));
   };

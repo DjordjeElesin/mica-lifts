@@ -30,6 +30,7 @@ export default defineConfig([
         {
           usePrettierrc: true,
           endOfLine: "auto",
+          trailingComma: "es5",
         },
       ],
     },
