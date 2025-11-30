@@ -1,14 +1,15 @@
 import { ExerciseCardAdd } from "@/components/ExerciseCard";
-import { useCreateWorkout } from "../useCreateWorkout";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui";
+import { useAddExercise } from "../useAddExercise";
+import type { TExerciseActive } from "@/types";
 
 export const SelectExercises = () => {
   const { toggleSelect, search, searchResults, onChangeSearch } =
-    useCreateWorkout();
+    useAddExercise();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4">
       <h5>Select Exercises</h5>
       <div className="flex flex-col gap-4 mb-1">
         <Input
@@ -18,12 +19,12 @@ export const SelectExercises = () => {
         />
         <Separator orientation="horizontal" />
       </div>
-      <div className="flex flex-col gap-3 pr-1.5">
+      <div className="flex flex-col gap-3 pr-1.5 max-h-[270px] min-h-[270px] overflow-y-auto">
         {searchResults.map((item) => (
           <ExerciseCardAdd
             key={item.id}
             exercise={item}
-            toggleAdd={() => toggleSelect(item)}
+            toggleAdd={() => toggleSelect(item as TExerciseActive)}
           />
         ))}
       </div>

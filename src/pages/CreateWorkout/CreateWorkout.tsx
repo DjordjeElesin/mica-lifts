@@ -5,13 +5,10 @@ import { ButtonSection } from "./components/ButtonSection";
 import { useCreateWorkout } from "./useCreateWorkout";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { SelectExercises } from "./components/SelectExercises";
-import { AddExerciseSets } from "./components/AddExerciseSets";
+import { ExercisesSetup } from "./components/ExercisesSetup";
 
 export const loader = async () =>
-  Promise.all([
-    useExercisesStore.getState().actions.getAll(),
-  ]);
-
+  Promise.all([useExercisesStore.getState().actions.getAll()]);
 
 export const CreateWorkoutBase = () => {
   const {
@@ -30,7 +27,7 @@ export const CreateWorkoutBase = () => {
       <Loading type="exercises" />
       {isStepOne && <CreateWorkoutForm />}
       {isStepTwo && <SelectExercises />}
-      {isStepThree && <AddExerciseSets/>}
+      {isStepThree && <ExercisesSetup />}
       <ButtonSection />
     </div>
   );

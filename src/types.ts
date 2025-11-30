@@ -32,9 +32,14 @@ export type TWorkout = {
   notes?: string;
   exercises: TExercise[];
 };
+export type TWorkoutActive = Omit<TWorkout, "exercises"> & {
+  exercises: TExerciseActive[];
+};
+
+export type TWorkoutExercisePayload = { exerciseId: string; sets: TSet[] };
 
 export type TWorkoutPayload = Omit<TWorkout, "id" | "exercises"> & {
-  exercises: { exerciseId: string; sets: TSet[] }[];
+  exercises: TWorkoutExercisePayload[];
 };
 
 export type TMuscleGroup = {

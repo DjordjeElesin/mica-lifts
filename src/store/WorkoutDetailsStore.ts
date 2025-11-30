@@ -9,17 +9,24 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { useLoadingStore } from "./LoadingStore";
 import type { NavigateFunction } from "react-router-dom";
-import type { TWorkout, TWorkoutPayload } from "@/types";
+import type {
+  TWorkout,
+  TWorkoutExercisePayload,
+  TWorkoutPayload,
+} from "@/types";
 
 export type TWorkoutDetailsStore = {
   data: TWorkout | null;
   actions: {
     getWorkoutById: (workoutId: string) => Promise<TWorkout>;
-    addExercise: (workoutId: string, exercise: string) => Promise<void>;
+    addExercise: (
+      workoutId: string,
+      payload: TWorkoutExercisePayload,
+    ) => Promise<void>;
     removeExercise: (workoutId: string, exerciseId: string) => Promise<void>;
     createWorkout: (
       payload: TWorkoutPayload,
-      navigate: NavigateFunction
+      navigate: NavigateFunction,
     ) => Promise<string>;
   };
 };
@@ -49,12 +56,12 @@ export const useWorkoutDetailsStore = create(
           return {} as TWorkout;
         }
       },
-      addExercise: async (workoutId, exerciseId) => {
+      addExercise: async (workoutId, payload) => {
         try {
           useLoadingStore
             .getState()
             .actions.setLoadingState("workoutDetails", true);
-          await addExerciseToWorkout(workoutId, exerciseId);
+          await addExerciseToWorkout(workoutId, payload);
           await get().actions.getWorkoutById(workoutId);
           useLoadingStore
             .getState()
@@ -103,5 +110,5 @@ export const useWorkoutDetailsStore = create(
         }
       },
     },
-  }))
+  })),
 );

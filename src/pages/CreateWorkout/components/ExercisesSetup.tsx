@@ -1,7 +1,7 @@
 import { ExerciseCardAddSets } from "@/components/ExerciseCard";
 import { useCreateWorkout } from "../useCreateWorkout";
 
-export const AddExerciseSets = () => {
+export const ExercisesSetup = () => {
   const { selectedExercises, onAddSetToExercise } = useCreateWorkout();
 
   return (

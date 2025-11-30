@@ -1,5 +1,5 @@
 import { ExerciseCard, ExerciseCardActive } from "@/components/ExerciseCard";
-import type { TExercise } from "@/types";
+import type { TExercise, TExerciseActive } from "@/types";
 
 export const ExerciseList = ({
   exercises,
@@ -7,7 +7,7 @@ export const ExerciseList = ({
   workoutId,
   onRemoveExercise,
 }: {
-  exercises: TExercise[];
+  exercises: TExercise[] | TExerciseActive[];
   isActive: boolean;
   workoutId: string;
   onRemoveExercise: (wId: string, eId: string) => Promise<void>;
@@ -16,7 +16,7 @@ export const ExerciseList = ({
     ? exercises.map((item) => (
         <ExerciseCardActive
           key={item.id}
-          exercise={item}
+          exercise={item as TExerciseActive}
           onRemove={() => onRemoveExercise(workoutId, item.id)}
         />
       ))

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui";
 import { useCreateWorkout } from "../useCreateWorkout";
+import { Loading } from "@/components/Loading";
 
 export const ButtonSection = () => {
   const {
@@ -16,6 +17,7 @@ export const ButtonSection = () => {
 
   return (
     <div className="flex gap-4 fixed bottom-0 left-0 right-0 p-4 pb-7 h-20 bg-slate-950">
+      <Loading type="createWorkout" />
       <Button
         variant="outline"
         className="flex-1"
