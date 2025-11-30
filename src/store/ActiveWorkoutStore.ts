@@ -1,16 +1,16 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { format } from "date-fns";
-import type { TWorkout } from "@/types";
+import type { TWorkoutActive } from "@/types";
 
 export type TActiveWorkoutStore = {
-  workout: TWorkout | null;
+  workout: TWorkoutActive | null;
   startedAt: string;
   exercisesProgress: {
     [exerciseId: string]: boolean[];
   };
   actions: {
-    startWorkout: (workout: TWorkout) => void;
+    startWorkout: (workout: TWorkoutActive) => void;
     toggleSet: (exerciseId: string, setIndex: number) => void;
     resetWorkout: () => void;
   };
@@ -29,7 +29,7 @@ export const useActiveWorkoutStore = create(
           state.startedAt = format(new Date(), "PPp");
 
           state.exercisesProgress = Object.fromEntries(
-            workout.exercises.map((ex) => [ex.id, ex.sets.map(() => false)])
+            workout.exercises.map((ex) => [ex.id, ex.sets.map(() => false)]),
           );
         });
       },
@@ -50,5 +50,5 @@ export const useActiveWorkoutStore = create(
         });
       },
     },
-  }))
+  })),
 );

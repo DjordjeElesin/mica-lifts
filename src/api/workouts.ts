@@ -1,5 +1,10 @@
 import { db } from "@/lib/firebase";
-import type { TWorkout, TWorkoutPayload, TSet } from "@/types";
+import type {
+  TWorkout,
+  TWorkoutPayload,
+  TSet,
+  TWorkoutExercisePayload,
+} from "@/types";
 import {
   collection,
   getDocs,
@@ -8,7 +13,6 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  arrayRemove,
 } from "firebase/firestore";
 
 export const getWorkouts = async () => {
@@ -19,7 +23,7 @@ export const getWorkouts = async () => {
   ]);
 
   const musclesMap = new Map(
-    muscleSnap.docs.map((d) => [d.id, { id: d.id, ...d.data() }])
+    muscleSnap.docs.map((d) => [d.id, { id: d.id, ...d.data() }]),
   );
 
   const exercisesMap = new Map(
@@ -31,7 +35,7 @@ export const getWorkouts = async () => {
         url: d.data().url,
         muscleGroup: musclesMap.get(d.data().muscleGroup) || null,
       },
-    ])
+    ]),
   );
 
   return workoutsSnap.docs.map((d) => {
@@ -45,7 +49,7 @@ export const getWorkouts = async () => {
         ({ exerciseId, sets }: { exerciseId: string; sets: TSet[] }) => ({
           ...(exercisesMap.get(exerciseId) || {}),
           sets: sets || [],
-        })
+        }),
       ),
     } as TWorkout;
   });
@@ -60,7 +64,7 @@ export const getById = async (workoutId: string): Promise<TWorkout> => {
   if (!workoutSnap.exists()) return {} as TWorkout;
 
   const musclesMap = new Map(
-    muscleSnap.docs.map((d) => [d.id, { id: d.id, ...d.data() }])
+    muscleSnap.docs.map((d) => [d.id, { id: d.id, ...d.data() }]),
   );
 
   const exercisesMap = new Map(
@@ -72,7 +76,7 @@ export const getById = async (workoutId: string): Promise<TWorkout> => {
         url: d.data().url,
         muscleGroup: musclesMap.get(d.data().muscleGroup) || null,
       },
-    ])
+    ]),
   );
   return {
     id: workoutSnap.id,
@@ -86,31 +90,39 @@ export const getById = async (workoutId: string): Promise<TWorkout> => {
             ...(exercisesMap.get(exerciseId) || {}),
             sets: sets || [],
           };
-        }
+        },
       ),
   } as TWorkout;
 };
 
 export const addExerciseToWorkout = async (
   workoutId: string,
-  exerciseId: string
+  payload: TWorkoutExercisePayload,
 ): Promise<void> => {
   await updateDoc(doc(db, "workouts", workoutId), {
-    exercises: arrayUnion(exerciseId),
+    exercises: arrayUnion(payload),
   });
 };
 
 export const removeExerciseFromWorkout = async (
   workoutId: string,
-  exerciseId: string
+  exerciseId: string,
 ): Promise<void> => {
+  const snap = await getDoc(doc(db, "workouts", workoutId));
+  if (!snap.exists()) return;
+
+  const updatedExercises = snap
+    .data()
+    .exercises.filter(
+      (ex: TWorkoutExercisePayload) => ex.exerciseId !== exerciseId,
+    );
   await updateDoc(doc(db, "workouts", workoutId), {
-    exercises: arrayRemove(exerciseId),
+    exercises: updatedExercises,
   });
 };
 
 export const createWorkout = async (
-  payload: TWorkoutPayload
+  payload: TWorkoutPayload,
 ): Promise<string> => {
   const docRef = await addDoc(collection(db, "workouts"), {
     name: payload.name,

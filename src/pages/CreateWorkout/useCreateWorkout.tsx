@@ -37,11 +37,11 @@ export const useCreateWorkout = () => {
   });
 
   const createWorkout = useWorkoutDetailsStore(
-    (state) => state.actions.createWorkout
+    (state) => state.actions.createWorkout,
   );
 
   const onFormChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormValues((s) => ({ ...s, [name]: value }));
@@ -59,14 +59,19 @@ export const useCreateWorkout = () => {
   const onAddSetToExercise = (set: TSet, exerciseId: string) => {
     setSelectedExercises((prev) =>
       prev.map((item) =>
-        item.id === exerciseId ? { ...item, sets: [...item.sets, set] } : item
-      )
+        item.id === exerciseId ? { ...item, sets: [...item.sets, set] } : item,
+      ),
     );
   };
 
+  // const onRemoveSet = (index: number) => {
+  //   const updatedSets = sets.filter((_, i) => i !== index);
+  //   setSets(updatedSets);
+  // };
+
   const isSubmitDisabled = useMemo(
     () => !formValues.name || !selectedExercises.length,
-    [formValues, selectedExercises]
+    [formValues, selectedExercises],
   );
 
   const onSubmit = () => {

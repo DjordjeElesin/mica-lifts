@@ -1,7 +1,9 @@
-import type { TSet } from "@/types";
+import { useExercisesStore } from "@/store/ExercisesStore";
+import type { TExercise, TExerciseActive } from "@/types";
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type Dispatch,
@@ -13,19 +15,18 @@ type TAddExerciseContext = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   workoutId: string;
-  sets: TSet[];
-  setSets: Dispatch<SetStateAction<TSet[]>>;
-  newSet: TSet;
-  setNewSet: Dispatch<SetStateAction<TSet>>;
-  formValues: { name: string; url: string };
-  setFormValues: Dispatch<SetStateAction<{ name: string; url: string }>>;
+  selectedExercise: TExerciseActive | null;
+  setSelectedExercise: Dispatch<SetStateAction<TExerciseActive | null>>;
+  step: number;
+  setStep: Dispatch<SetStateAction<number>>;
+  exercises: TExercise[];
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  searchResults: TExercise[];
+  setSearchResults: Dispatch<SetStateAction<TExercise[]>>;
 } | null;
 
-//eslint-disable-next-line
 export const AddExerciseContext = createContext<TAddExerciseContext>(null);
-
-const initialFormValues = { name: "", url: "" };
-const initialNewSet = { type: "", reps: 8 };
 
 export const AddExerciseProvider = ({
   children,
@@ -33,36 +34,49 @@ export const AddExerciseProvider = ({
   children: React.ReactNode;
 }) => {
   const { id: workoutId } = useParams();
+  const exercises = useExercisesStore((store) => store.data);
+  const getExercises = useExercisesStore((store) => store.actions.getAll);
+
+  const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
-  const [sets, setSets] = useState<TSet[]>([]);
-  const [newSet, setNewSet] = useState<TSet>(initialNewSet as TSet);
-  const [formValues, setFormValues] = useState<{ name: string; url: string }>(
-    initialFormValues
-  );
+  const [selectedExercise, setSelectedExercise] =
+    useState<TExerciseActive | null>(null);
+  const [searchResults, setSearchResults] = useState(exercises);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    getExercises();
+  }, [getExercises]);
+
+  useEffect(() => {
+    setSearchResults(exercises);
+  }, [exercises]);
 
   const value = useMemo(
     () => ({
       isOpen,
       setIsOpen,
       workoutId: workoutId || "",
-      sets,
-      setSets,
-      newSet,
-      setNewSet,
-      formValues,
-      setFormValues,
+      step,
+      setStep,
+      exercises,
+      selectedExercise,
+      setSelectedExercise,
+      search,
+      setSearch,
+      searchResults,
+      setSearchResults,
     }),
     [
       isOpen,
       setIsOpen,
       workoutId,
-      sets,
-      setSets,
-      newSet,
-      setNewSet,
-      formValues,
-      setFormValues,
-    ]
+      step,
+      exercises,
+      selectedExercise,
+      search,
+      searchResults,
+    ],
   );
 
   return (
@@ -72,13 +86,12 @@ export const AddExerciseProvider = ({
   );
 };
 
-//eslint-disable-next-line
 export const useAddExerciseContext = () => {
   const context = useContext(AddExerciseContext);
 
   if (!context) {
     throw new Error(
-      "useAddExerciseContext must be used inside an AddExerciseProvider"
+      "useAddExerciseContext must be used inside an AddExerciseProvider",
     );
   }
 

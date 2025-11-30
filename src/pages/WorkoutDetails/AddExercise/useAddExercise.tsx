@@ -1,79 +1,100 @@
-import { useMemo, type ChangeEvent } from "react";
+import { useMemo } from "react";
 import { useAddExerciseContext } from "./AddExerciseContext";
-import type { TSet, TSetType } from "@/types";
 import { useWorkoutDetailsStore } from "@/store/WorkoutDetailsStore";
+import { useSearchExercises } from "@/hooks";
+import { useStepManagement } from "./useStepManagement";
+import type {
+  TExercise,
+  TExerciseActive,
+  TSet,
+  TWorkoutExercisePayload,
+} from "@/types";
 
 export const useAddExercise = () => {
   const {
+    workoutId,
     isOpen,
     setIsOpen,
-    workoutId,
-    sets,
-    setSets,
-    newSet,
-    setNewSet,
-    formValues,
-    setFormValues,
+    step,
+    setStep,
+    exercises,
+    search,
+    setSearch,
+    searchResults,
+    setSearchResults,
+    selectedExercise,
+    setSelectedExercise,
   } = useAddExerciseContext();
 
+  const { onChangeSearch } = useSearchExercises({
+    exercises,
+    search,
+    setSearch,
+    setSearchResults,
+  });
+
+  const { onNext, onBack, onCancel, isNextDisabled } = useStepManagement({
+    step,
+    setStep,
+    selectedExercise,
+    setIsOpen,
+  });
+
   const addExercise = useWorkoutDetailsStore(
-    (state) => state.actions.addExercise
+    (state) => state.actions.addExercise,
   );
 
-  const increase = () =>
-    setNewSet((prev) => ({ ...prev, reps: prev.reps + 1 }));
-  const decrease = () =>
-    setNewSet((prev) => ({ ...prev, reps: prev.reps - 1 }));
-
-  const onChangeSetType = (type: string) => {
-    setNewSet((prev) => ({ ...prev, type: type as TSetType }));
+  const toggleSelect = (exercise: TExercise) => {
+    setSelectedExercise((prev) => {
+      return prev?.id === exercise.id
+        ? null
+        : ({
+            ...exercise,
+            sets: [],
+          } as TExerciseActive);
+    });
+    setStep((prev) => prev + 1);
   };
 
-  const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
-    setFormValues((s) => ({ ...s, [name]: value }));
+  const onAddSetToExercise = (set: TSet, exerciseId: string) => {
+    setSelectedExercise((prev): TExerciseActive | null => {
+      if (!prev) return prev;
+      if (prev.id !== exerciseId) return prev;
+      return { ...prev, sets: [...prev.sets, set] };
+    });
   };
 
-  const onAddSet = (set: TSet) => {
-    setSets((prev) => [...prev, set]);
-  };
-  const onRemoveSet = (index: number) => {
-    const updatedSets = sets.filter((_, i) => i !== index);
-    setSets(updatedSets);
-  };
+  const isAddExerciseDisabled = useMemo(() => {
+    return false;
+  }, []);
 
-  const isSubmitDisabled = useMemo(
-    () => !sets.length || !formValues.name,
-    [sets, formValues]
-  );
+  const onAddExercise = () => {
+    if (isAddExerciseDisabled) return;
 
-  const onSubmit = () => {
-    if (isSubmitDisabled) return;
+    const payload = {
+      exerciseId: selectedExercise?.id,
+      sets: selectedExercise?.sets,
+    } as TWorkoutExercisePayload;
 
-    const exercise = {
-      name: formValues.name,
-      url: formValues.url,
-      sets,
-    };
-    addExercise(workoutId, exercise);
+    addExercise(workoutId, payload);
     setIsOpen(false);
   };
 
   return {
     isOpen,
     setIsOpen,
-    sets,
-    newSet,
-    increase,
-    decrease,
-    onChangeSetType,
-    formValues,
-    onFormChange,
-    onAddSet,
-    onRemoveSet,
-    onSubmit,
-    isSubmitDisabled,
+    step,
+    onNext,
+    onBack,
+    onCancel,
+    isNextDisabled,
+    search,
+    onChangeSearch,
+    searchResults,
+    selectedExercise,
+    toggleSelect,
+    onAddSetToExercise,
+    onAddExercise,
+    isAddExerciseDisabled,
   };
 };
