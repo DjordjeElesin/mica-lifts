@@ -16,7 +16,12 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     rules: {
+      "no-console": ["warn", { allow: ["error"] }],
       "react-refresh/only-export-components": "off",
+      "prettier/prettier": [
+        "error",
+        { usePerttierrc: true, endOfLine: "auto" },
+      ],
     },
     languageOptions: {
       ecmaVersion: 2020,
