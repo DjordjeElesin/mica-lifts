@@ -14,7 +14,6 @@ type TExercisesContext = {
   muscleGroups: TMuscleGroup[];
   exercises: TExercise[];
   searchResults: TExercise[];
-  setSearchResults: Dispatch<SetStateAction<TExercise[]>>;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
 };
@@ -28,19 +27,27 @@ export const ExercisesProvider = ({
   const muscleGroups = useMuscleGroupStore((store) => store.data);
   const exercises = useExercisesStore((store) => store.data);
 
-  const [searchResults, setSearchResults] = useState(exercises);
   const [search, setSearch] = useState("");
+
+  const searchResults = useMemo(
+    () =>
+      !search
+        ? exercises
+        : exercises.filter(({ name }) =>
+            name.toLowerCase().includes(search.toLowerCase()),
+          ),
+    [exercises, search],
+  );
 
   const value = useMemo(
     () => ({
       muscleGroups,
       exercises,
       searchResults,
-      setSearchResults,
       search,
       setSearch,
     }),
-    [muscleGroups, exercises, searchResults, search]
+    [muscleGroups, exercises, searchResults, search],
   );
 
   return (
@@ -55,7 +62,7 @@ export const useExercisesContext = () => {
 
   if (!context) {
     throw new Error(
-      "useExercisesContext must be used inside the ExercisesProvider"
+      "useExercisesContext must be used inside the ExercisesProvider",
     );
   }
 

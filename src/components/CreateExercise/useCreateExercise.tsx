@@ -9,9 +9,8 @@ export const useCreateExercise = () => {
     useCreateExerciseContext();
 
   const createExercise = useExercisesStore(
-    (state) => state.actions.createExercise
+    (state) => state.actions.createExercise,
   );
-  const getExercises = useExercisesStore((state) => state.actions.getAll);
 
   const onMuscleGroupChange = (muscleGroup: string) => {
     setFormValues((prev) => ({ ...prev, muscleGroup }));
@@ -26,7 +25,7 @@ export const useCreateExercise = () => {
 
   const isSubmitDisabled = useMemo(
     () => !formValues.name || !formValues.muscleGroup,
-    [formValues]
+    [formValues],
   );
 
   const onSubmit = async () => {
@@ -38,7 +37,6 @@ export const useCreateExercise = () => {
       muscleGroup: formValues.muscleGroup,
     };
     await createExercise(exercise);
-    await getExercises();
     setIsOpen(false);
     setFormValues(initialFormValues);
   };

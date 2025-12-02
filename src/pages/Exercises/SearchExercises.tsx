@@ -4,14 +4,11 @@ import { Separator } from "@/components/ui";
 import { useSearchExercises } from "@/hooks";
 
 export const SearchExercises = () => {
-  const { exercises, setSearchResults, search, setSearch } =
-    useExercisesContext();
+  const { search, setSearch } = useExercisesContext();
 
   const { onChangeSearch } = useSearchExercises({
-    exercises,
     search,
     setSearch,
-    setSearchResults,
   });
 
   return (

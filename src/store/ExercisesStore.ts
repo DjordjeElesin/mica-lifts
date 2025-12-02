@@ -13,7 +13,7 @@ type TExercisesStore = {
 };
 
 export const useExercisesStore = create(
-  immer<TExercisesStore>((set) => ({
+  immer<TExercisesStore>((set, get) => ({
     data: [],
     actions: {
       getAll: async () => {
@@ -39,6 +39,7 @@ export const useExercisesStore = create(
         try {
           useLoadingStore.getState().actions.setLoadingState("exercises", true);
           await createExercise(payload);
+          await get().actions.getAll();
           useLoadingStore
             .getState()
             .actions.setLoadingState("exercises", false);
@@ -50,5 +51,5 @@ export const useExercisesStore = create(
         }
       },
     },
-  }))
+  })),
 );

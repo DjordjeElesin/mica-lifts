@@ -19,14 +19,11 @@ export const useCreateWorkout = () => {
     search,
     setSearch,
     searchResults,
-    setSearchResults,
   } = useCreateWorkoutContext();
 
   const { onChangeSearch } = useSearchExercises({
-    exercises,
     search,
     setSearch,
-    setSearchResults,
   });
 
   const { onNext, onBack, onCancel, isNextDisabled } = useStepManagement({
