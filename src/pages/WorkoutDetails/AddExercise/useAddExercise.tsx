@@ -73,6 +73,8 @@ export const useAddExercise = () => {
     } as TWorkoutExercisePayload;
 
     addExercise(workoutId, payload);
+    setStep(1);
+    setSearch("");
     setIsOpen(false);
   };
 
