@@ -23,7 +23,6 @@ type TAddExerciseContext = {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults: TExercise[];
-  setSearchResults: Dispatch<SetStateAction<TExercise[]>>;
 } | null;
 
 export const AddExerciseContext = createContext<TAddExerciseContext>(null);
@@ -41,16 +40,21 @@ export const AddExerciseProvider = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] =
     useState<TExerciseActive | null>(null);
-  const [searchResults, setSearchResults] = useState(exercises);
   const [search, setSearch] = useState("");
+
+  const searchResults = useMemo(
+    () =>
+      !search
+        ? exercises
+        : exercises.filter(({ name }) =>
+            name.toLowerCase().includes(search.toLowerCase()),
+          ),
+    [exercises, search],
+  );
 
   useEffect(() => {
     getExercises();
   }, [getExercises]);
-
-  useEffect(() => {
-    setSearchResults(exercises);
-  }, [exercises]);
 
   const value = useMemo(
     () => ({
@@ -65,7 +69,6 @@ export const AddExerciseProvider = ({
       search,
       setSearch,
       searchResults,
-      setSearchResults,
     }),
     [
       isOpen,

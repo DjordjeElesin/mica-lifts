@@ -17,20 +17,16 @@ export const useAddExercise = () => {
     setIsOpen,
     step,
     setStep,
-    exercises,
     search,
     setSearch,
     searchResults,
-    setSearchResults,
     selectedExercise,
     setSelectedExercise,
   } = useAddExerciseContext();
 
   const { onChangeSearch } = useSearchExercises({
-    exercises,
     search,
     setSearch,
-    setSearchResults,
   });
 
   const { onNext, onBack, onCancel, isNextDisabled } = useStepManagement({

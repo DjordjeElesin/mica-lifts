@@ -20,11 +20,10 @@ type TCreateWorkoutContext = {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults: TExercise[];
-  setSearchResults: Dispatch<SetStateAction<TExercise[]>>;
 };
 
 export const CreateWorkoutContext = createContext<TCreateWorkoutContext | null>(
-  null
+  null,
 );
 
 const initialFormValues = { name: "", notes: "" };
@@ -38,13 +37,21 @@ export const CreateWorkoutProvider = ({
 
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState<{ name: string; notes: string }>(
-    initialFormValues
+    initialFormValues,
   );
   const [selectedExercises, setSelectedExercises] = useState<TExerciseActive[]>(
-    []
+    [],
   );
-  const [searchResults, setSearchResults] = useState(exercises);
   const [search, setSearch] = useState("");
+  const searchResults = useMemo(
+    () =>
+      !search
+        ? exercises
+        : exercises.filter(({ name }) =>
+            name.toLowerCase().includes(search.toLowerCase()),
+          ),
+    [exercises, search],
+  );
 
   const value = useMemo(
     () => ({
@@ -56,11 +63,10 @@ export const CreateWorkoutProvider = ({
       setStep,
       exercises,
       searchResults,
-      setSearchResults,
       search,
       setSearch,
     }),
-    [formValues, selectedExercises, step, exercises, searchResults, search]
+    [formValues, selectedExercises, step, exercises, searchResults, search],
   );
   return (
     <CreateWorkoutContext.Provider value={value}>
@@ -74,7 +80,7 @@ export const useCreateWorkoutContext = () => {
 
   if (!context) {
     throw new Error(
-      "useCreateWorkoutContext must be used inside a CreateWorkoutProvider"
+      "useCreateWorkoutContext must be used inside a CreateWorkoutProvider",
     );
   }
   return context;
